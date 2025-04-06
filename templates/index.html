@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Object Detection System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f7f9fc;
+      color: #333;
+    }
+    
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-right: 10px;
+      border-radius: 4px 4px 0 0;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      background-color: #f8f9fa;
+    }
+    
+    .tab.active {
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .upload-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .file-input {
+      margin: 20px 0;
+    }
+    
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.2s;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+    }
+    
+    .description {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e8f4fc;
+      border-radius: 4px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Image Detection System</h1>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="garbage">Garbage Detection</div>
+      <div class="tab" data-tab="pothole">Road Quality Check</div>
+    </div>
+    
+    <div id="garbageTab" class="tab-content active">
+      <div class="upload-container">
+        <form action="/detect/garbage" method="post" enctype="multipart/form-data">
+          <div class="file-input">
+            <input type="file" name="image" required accept="image/*">
+          </div>
+          <button type="submit">Detect Garbage</button>
+        </form>
+      </div>
+      
+      <div class="description">
+        <p>Upload any image to detect if it contains garbage. Our system will analyze the image and tell you whether garbage is present or not.</p>
+        <p>The system uses machine learning to identify various types of waste like plastic, cardboard, glass, metal, paper, and other trash.</p>
+      </div>
+    </div>
+    
+    <div id="potholeTab" class="tab-content">
+      <div class="upload-container">
+        <form action="/detect/pothole" method="post" enctype="multipart/form-data">
+          <div class="file-input">
+            <input type="file" name="image" required accept="image/*">
+          </div>
+          <button type="submit">Check Road Quality</button>
+        </form>
+      </div>
+      
+      <div class="description">
+        <p>Upload an image of a road to check its quality. Our system will analyze if the road is in perfect condition or has potholes.</p>
+        <p>The model will classify the road as either "Perfect" (no potholes) or highlight areas with potholes that need repair.</p>
+        <p>This system helps identify road damage that needs attention and can be useful for maintenance crews and drivers.</p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // JavaScript for tab switching
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.tab');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          this.classList.add('active');
+          
+          // Hide all tab contents
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          
+          // Show selected tab content
+          const tabName = this.getAttribute('data-tab');
+          document.getElementById(tabName + 'Tab').classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
