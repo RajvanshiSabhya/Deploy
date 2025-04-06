@@ -89,11 +89,45 @@
       font-size: 14px;
       line-height: 1.6;
     }
+
+    .warning {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #ffe8e8;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #d9534f;
+      line-height: 1.6;
+      border-left: 4px solid #d9534f;
+    }
+
+    .status-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .status-link a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .status-link a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Image Detection System</h1>
+    
+    {% if not models_loaded %}
+    <div class="warning">
+      <strong>Warning:</strong> The machine learning models are not currently loaded. 
+      Detection functionality may not work correctly. Please check the 
+      <a href="/status">status page</a> for more information.
+    </div>
+    {% endif %}
     
     <div class="tabs">
       <div class="tab active" data-tab="garbage">Garbage Detection</div>
@@ -106,7 +140,7 @@
           <div class="file-input">
             <input type="file" name="image" required accept="image/*">
           </div>
-          <button type="submit">Detect Garbage</button>
+          <button type="submit" {% if not models_loaded %}disabled{% endif %}>Detect Garbage</button>
         </form>
       </div>
       
@@ -122,7 +156,7 @@
           <div class="file-input">
             <input type="file" name="image" required accept="image/*">
           </div>
-          <button type="submit">Check Road Quality</button>
+          <button type="submit" {% if not models_loaded %}disabled{% endif %}>Check Road Quality</button>
         </form>
       </div>
       
@@ -131,6 +165,10 @@
         <p>The model will classify the road as either "Perfect" (no potholes) or highlight areas with potholes that need repair.</p>
         <p>This system helps identify road damage that needs attention and can be useful for maintenance crews and drivers.</p>
       </div>
+    </div>
+
+    <div class="status-link">
+      <a href="/status">Check System Status</a>
     </div>
   </div>
   
